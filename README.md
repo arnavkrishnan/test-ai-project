@@ -1,2 +1,2 @@
-# private-project
-A private project
+# private-work
+A private work area
