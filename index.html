@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with ChatGPT</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Chat with ChatGPT</h1>
+        <div class="api-key-container">
+            <label for="api-key">Enter OpenAI API Key:</label>
+            <input type="text" id="api-key" placeholder="sk-...">
+            <button onclick="startChat()">Start Chatting</button>
+        </div>
+        <div class="chat-container" style="display:none;">
+            <div class="messages" id="messages"></div>
+            <input type="text" id="user-input" placeholder="Type your message here...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
