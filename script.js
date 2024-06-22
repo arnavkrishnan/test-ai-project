@@ -1,3 +1,15 @@
+let apiKey = '';
+
+function setApiKey() {
+    apiKey = document.getElementById('api-key-input').value;
+    if (apiKey) {
+        document.getElementById('user-input').disabled = false;
+        document.querySelector('.input-container button').disabled = false;
+    } else {
+        alert('Please enter a valid API key.');
+    }
+}
+
 async function sendMessage() {
     const userInput = document.getElementById('user-input');
     const message = userInput.value;
@@ -10,7 +22,7 @@ async function sendMessage() {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer YOUR_API_KEY` // Replace with your actual API key
+            'Authorization': `Bearer ${apiKey}`
         },
         body: JSON.stringify({
             model: 'gpt-3.5-turbo',
