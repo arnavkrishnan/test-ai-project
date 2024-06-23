@@ -7,9 +7,24 @@ const sendChatBtn =
 const chatbox = document.querySelector(".chatbox");
 
 let userMessage;
-let API_KEY = prompt("What is your OpenAI API key?", "sk-...");
+let userApiKey = '';
 
-//OpenAI Free APIKey
+document.addEventListener('DOMContentLoaded', () => {
+	const apiKeyMessage = `
+		Please enter your OpenAI API key (sk-...):
+		If you don't have one, get it from 
+		<a href="https://platform.openai.com/signup" target="_blank">OpenAI</a>.
+	`;
+
+	const tempDiv = document.createElement('div');
+	tempDiv.innerHTML = apiKeyMessage;
+	document.body.appendChild(tempDiv);
+
+	const apiKeyInput = prompt(tempDiv.innerText, "sk-");
+	document.body.removeChild(tempDiv);
+
+	userApiKey = apiKeyInput;
+});
 
 const createChatLi = (message, className) => {
 	const chatLi = document.createElement("li");
@@ -22,13 +37,12 @@ const createChatLi = (message, className) => {
 
 const generateResponse = (incomingChatLi) => {
 	const API_URL = "https://api.openai.com/v1/chat/completions";
-	const messageElement = incomingChatLi
-	.querySelector("p");
+	const messageElement = incomingChatLi.querySelector("p");
 	const requestOptions = {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
-			"Authorization": `Bearer ${API_KEY}`
+			"Authorization": `Bearer ${userApiKey}`
 		},
 		body: JSON.stringify({
 			"model": "gpt-3.5-turbo",
@@ -49,31 +63,25 @@ const generateResponse = (incomingChatLi) => {
 			return res.json();
 		})
 		.then(data => {
-			messageElement
-			.textContent = data.choices[0].message.content;
+			messageElement.textContent = data.choices[0].message.content;
 		})
 		.catch((error) => {
-			messageElement
-			.classList.add("error");
-			messageElement
-			.textContent = "Oops! Something went wrong. Please try again!";
+			messageElement.classList.add("error");
+			messageElement.textContent = "Oops! Something went wrong. Please try again!";
 		})
 		.finally(() => chatbox.scrollTo(0, chatbox.scrollHeight));
 };
-
 
 const handleChat = () => {
 	userMessage = chatInput.value.trim();
 	if (!userMessage) {
 		return;
 	}
-	chatbox
-	.appendChild(createChatLi(userMessage, "chat-outgoing"));
-	chatbox
-	.scrollTo(0, chatbox.scrollHeight);
+	chatbox.appendChild(createChatLi(userMessage, "chat-outgoing"));
+	chatbox.scrollTo(0, chatbox.scrollHeight);
 
 	setTimeout(() => {
-		const incomingChatLi = createChatLi("Thinking...", "chat-incoming")
+		const incomingChatLi = createChatLi("Thinking...", "chat-incoming");
 		chatbox.appendChild(incomingChatLi);
 		chatbox.scrollTo(0, chatbox.scrollHeight);
 		generateResponse(incomingChatLi);
