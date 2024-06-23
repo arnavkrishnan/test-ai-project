@@ -1,52 +1,95 @@
-let apiKey = '';
+// script.js
 
-function startChat() {
-    apiKey = document.getElementById('api-key').value;
-    if (apiKey) {
-        document.querySelector('.api-key-container').style.display = 'none';
-        document.querySelector('.chat-container').style.display = 'block';
-    } else {
-        alert('Please enter your OpenAI API key.');
-    }
+const chatInput = 
+	document.querySelector('.chat-input textarea');
+const sendChatBtn = 
+	document.querySelector('.chat-input button');
+const chatbox = document.querySelector(".chatbox");
+
+let userMessage;
+const API_KEY = 
+	"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";
+
+//OpenAI Free APIKey
+
+const createChatLi = (message, className) => {
+	const chatLi = document.createElement("li");
+	chatLi.classList.add("chat", className);
+	let chatContent = 
+		className === "chat-outgoing" ? `<p>${message}</p>` : `<p>${message}</p>`;
+	chatLi.innerHTML = chatContent;
+	return chatLi;
 }
 
-async function sendMessage() {
-    const userInput = document.getElementById('user-input').value;
-    if (!userInput) return;
+const generateResponse = (incomingChatLi) => {
+	const API_URL = "https://api.openai.com/v1/chat/completions";
+	const messageElement = incomingChatLi
+	.querySelector("p");
+	const requestOptions = {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization": `Bearer ${API_KEY}`
+		},
+		body: JSON.stringify({
+			"model": "gpt-3.5-turbo",
+			"messages": [
+				{
+					role: "user",
+					content: userMessage
+				}
+			]
+		})
+	};
 
-    displayMessage(userInput, 'user');
-    document.getElementById('user-input').value = '';
+	fetch(API_URL, requestOptions)
+		.then(res => {
+			if (!res.ok) {
+				throw new Error("Network response was not ok");
+			}
+			return res.json();
+		})
+		.then(data => {
+			messageElement
+			.textContent = data.choices[0].message.content;
+		})
+		.catch((error) => {
+			messageElement
+			.classList.add("error");
+			messageElement
+			.textContent = "Oops! Something went wrong. Please try again!";
+		})
+		.finally(() => chatbox.scrollTo(0, chatbox.scrollHeight));
+};
 
-    try {
-        const response = await fetch('https://api.openai.com/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${apiKey}`
-            },
-            body: JSON.stringify({
-                model: "gpt-3.5-turbo",
-                messages: [{ role: "user", content: userInput }]
-            })
-        });
 
-        if (!response.ok) {
-            throw new Error(`Error: ${response.status} ${response.statusText}`);
-        }
+const handleChat = () => {
+	userMessage = chatInput.value.trim();
+	if (!userMessage) {
+		return;
+	}
+	chatbox
+	.appendChild(createChatLi(userMessage, "chat-outgoing"));
+	chatbox
+	.scrollTo(0, chatbox.scrollHeight);
 
-        const data = await response.json();
-        const botMessage = data.choices[0].message.content.trim();
-        displayMessage(botMessage, 'bot');
-    } catch (error) {
-        console.error(error);
-        displayMessage('An error occurred. Please try again.', 'bot');
-    }
+	setTimeout(() => {
+		const incomingChatLi = createChatLi("Thinking...", "chat-incoming")
+		chatbox.appendChild(incomingChatLi);
+		chatbox.scrollTo(0, chatbox.scrollHeight);
+		generateResponse(incomingChatLi);
+	}, 600);
 }
 
-function displayMessage(message, sender) {
-    const messageContainer = document.createElement('div');
-    messageContainer.classList.add('message', sender);
-    messageContainer.textContent = message;
-    document.getElementById('messages').appendChild(messageContainer);
-    messageContainer.scrollIntoView({ behavior: 'smooth' });
+sendChatBtn.addEventListener("click", handleChat);
+
+function cancel() {
+	let chatbotcomplete = document.querySelector(".chatBot");
+	if (chatbotcomplete.style.display != 'none') {
+		chatbotcomplete.style.display = "none";
+		let lastMsg = document.createElement("p");
+		lastMsg.textContent = 'Thanks for using our Chatbot!';
+		lastMsg.classList.add('lastMessage');
+		document.body.appendChild(lastMsg)
+	}
 }
