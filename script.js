@@ -7,7 +7,7 @@ const sendChatBtn =
 const chatbox = document.querySelector(".chatbox");
 
 let userMessage;f
-const API_KEY = prompt("What is your OpenAI API key?")
+let API_KEY = prompt("What is your OpenAI API key?")
 
 //OpenAI Free APIKey
 
