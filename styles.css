@@ -1,73 +1,136 @@
+/*style.css*/
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+box-sizing: border-box;
+margin: 0;
+padding: 0;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    background-color: #f0f0f0;
+font-family: "Poppins", sans-serif;
+font-weight: 400;
+font-style: normal;
+background-color: #f7f7f7;
 }
 
-.container {
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 300px;
-    text-align: center;
+.chatBot {
+border: 3px solid #2F8D46;
+border-radius: 10px;
+margin: 50px auto;
+overflow: hidden;
+width: 500px;
+overflow-y: clip;
+height: 600px;
+background: rgb(255, 255, 255) url(gfg-gg-logo.svg);
+background-size: contain;
+box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+background-repeat: no-repeat;
+background-position: center;
 }
 
-h1 {
-    margin-bottom: 20px;
+header {
+background-color: #2F8D46;
+text-align: center;
+padding: 10px 0;
+border-radius: 7px 7px 0 0;
 }
 
-.api-key-container, .chat-container {
-    margin-bottom: 20px;
+header h2 {
+color: #fff;
+margin: 0;
 }
 
-#api-key, #user-input {
-    width: calc(100% - 20px);
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+.chatbox {
+padding: 15px;
+list-style: none;
+overflow-y: auto;
+height: 400px;
 }
 
-button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
+.chatbox li {
+margin-bottom: 10px;
 }
 
-button:hover {
-    background-color: #0056b3;
+.chat p {
+padding: 10px;
+border-radius: 10px;
+max-width: 70%;
+word-wrap: break-word;
 }
 
-.messages {
-    max-height: 300px;
-    overflow-y: auto;
-    margin-bottom: 10px;
-    border: 1px solid #ddd;
-    padding: 10px;
-    border-radius: 4px;
-    background-color: #f9f9f9;
+.chat-outgoing p {
+background-color: #162887;
+align-self: flex-end;
+color: #fff;
 }
 
-.message {
-    margin-bottom: 10px;
-    padding: 10px;
-    border-radius: 4px;
+.chat-incoming p {
+background-color: #eaeaea;
 }
 
-.message.user {
-    background-color: #e1ffc7;
-    text-align: right;
+.chat-input {
+padding: 10px;
+border-top: 1px solid #ccc;
 }
 
-.message.bot {
-    background-color: #f1f1f1;
-    text-align: left;
+.chat-input textarea {
+width: 522px;
+padding: 10px;
+border: 1px solid #ccc;
+border-radius: 7px;
+resize: none;
+outline: none;
+overflow-y: scroll;
+background-color: #dcdcdc85;
+font-size: 16px;
+color: green;
+font-weight: 600;
+margin-top: -10px;
+margin-left: -15px;
+height: 71px;
+}
+
+#cross {
+float: right;
+position: relative;
+top: -38px;
+left: -15px;
+cursor: pointer;
+color: white;
+font-weight: bolder;
+font-size: 28px;
+}
+
+#cross:hover {
+color: red;
+transition: all .5s;
+}
+
+.chatbox .chat p.error {
+color: #ffffff;
+background-color: #ff3737e8;
+}
+
+#sendBTN {
+width: 100%;
+padding: 8px;
+border: 0;
+outline: none;
+font-size: 20px;
+font-weight: 600;
+border-radius: 7px;
+background-color: #2F8D46;
+cursor: pointer;
+color: white;
+margin-top: 12px;
+}
+
+.lastMessage {
+margin-top: 50px;
+font-size: 35px;
+font-weight: 600;
+color: darkgreen;
+margin-left: 550px;
 }
